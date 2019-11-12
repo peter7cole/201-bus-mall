@@ -20,19 +20,24 @@ function select3PicsAndRender() {
     }
   }
 
-  // invariants
-  // randomPicArray has three pics!
+  var placerholder0 = document.getElementById('picture-0');
+  var placerholder1 = document.getElementById('picture-1');
+  var placerholder2 = document.getElementById('picture-2');
+
   picStorageArray[randomPicArray[0]].render(placerholder0);
   picStorageArray[randomPicArray[1]].render(placerholder1);
   picStorageArray[randomPicArray[2]].render(placerholder2);
-
 }
 
-var pic = function (name, picture) {
+
+var Pic = function (name, picture) {
   this.name = name;
   this.picture = picture;
-
-  var markClick;
+  this.timesClicked = 0;
+  this.timesShown = 0;
+  var markClick = function(){
+    this.timesClicked++;
+  };
 
   this.render = function (domReference) {
     domReference.src = picture;
@@ -41,25 +46,28 @@ var pic = function (name, picture) {
   picStorageArray.push(this);
 };
 
-var picture0 = new pic('Picture 1', './img/pic0.jpg');
-var picture1 = new pic('Picture 2', './img/pic1.jpg');
-var picture2 = new pic('Picture 3', './img/pic2.jpg');
-var picture3 = new pic('Picture 4', './img/pic3.jpg');
-var picture4 = new pic('Picture 5', './img/pic4.jpg');
-var picture5 = new pic('Picture 6', './img/pic5.jpg');
+var picture0 = new Pic('Picture 1', './img/pic0.jpg');
+var picture1 = new Pic('Picture 2', './img/pic1.jpg');
+var picture2 = new Pic('Picture 3', './img/pic2.jpg');
+var picture3 = new Pic('Picture 4', './img/pic3.jpg');
+var picture4 = new Pic('Picture 5', './img/pic4.jpg');
+var picture5 = new Pic('Picture 6', './img/pic5.jpg');
+var picture6 = new Pic('Picture 6', './img/pic6.jpg');
+var picture7 = new Pic('Picture 6', './img/pic7.jpg');
+var picture8 = new Pic('Picture 6', './img/pic8.jpg');
+var picture9 = new Pic('Picture 6', './img/pic9.jpg');
 
-pic.render(picture1);
+// Pic.render(picture1);
 
 
 function clickManager(event) {
   clickCounter++;
   if (clickCounter < MAX_CLICK_COUNTER) {
-    alert(event.target.id);
     var picIndex;
 
-    if (event.targert.id === 'picture-0') {
+    if (event.target.id === 'picture-0') {
       picIndex = 0;
-    } else if (event.targert.id === 'picture-1') {
+    } else if (event.target.id === 'picture-1') {
       picIndex = 1;
     } else {
       picIndex = 2;
@@ -67,17 +75,20 @@ function clickManager(event) {
 
     var clickedPic = picStorageArray[randomPicArray[picIndex]];
     clickedPic.markClick();
-    //mising
+    select3PicsAndRender();
   } else {
     alert('game over');
   }
 }
-
-
 
 select3PicsAndRender();
 
 var placerholder0 = document.getElementById('picture-0');
 var placerholder1 = document.getElementById('picture-1');
 var placerholder2 = document.getElementById('picture-2');
+
+placerholder0.addEventListener('click',clickManager);
+placerholder1.addEventListener('click',clickManager);
+placerholder2.addEventListener('click',clickManager);
+
 
