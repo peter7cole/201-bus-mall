@@ -74,7 +74,6 @@ function clickManager(event) {
   } else {
     createPicChart();
   }
-  
 }
 
 select3PicsAndRender();
@@ -94,7 +93,7 @@ function createPicChart() {
   var nameArray = [];
   var clickArray = [];
 
-  for (index=0; index < picStorageArray.length; index++){
+  for (var index = 0; index < picStorageArray.length; index++){
     nameArray.push(picStorageArray[index].name);
     clickArray.push(picStorageArray[index].timesClicked);
   }
@@ -107,10 +106,14 @@ function createPicChart() {
       labels: nameArray,
       datasets: [
         {
-          label: 'Goat Clicks',
+          label: 'Pic Clicks',
           data: clickArray,
           backgroundColor: '#828282',
-          bordercolor: 'black',
+          borderColor: 'black',
+        },
+        {
+          label: 'Pic Clicks',
+          data: clickArray,
         }
       ],
     },
@@ -119,12 +122,12 @@ function createPicChart() {
         yAxes: [
           {
             ticks: {
-              beginAtZero: 'true',
+              beginAtZero: true,
             }
           },
         ],
-      },
+      }
     },
-  }
+  });
 }
 
