@@ -19,9 +19,9 @@ function select3PicsAndRender() {
   }
   console.log(`randomPicArray: ${randomPicArray}`);
 
-  var placerholder0 = document.getElementById('picture-0');
-  var placerholder1 = document.getElementById('picture-1');
-  var placerholder2 = document.getElementById('picture-2');
+  var placerholder0 = document.getElementById('placeholder-0');
+  var placerholder1 = document.getElementById('placeholder-1');
+  var placerholder2 = document.getElementById('placeholder-2');
 
   picStorageArray[randomPicArray[0]].render(placerholder0);
   picStorageArray[randomPicArray[1]].render(placerholder1);
@@ -55,8 +55,6 @@ var picture7 = new Pic('picture-7', './img/pic7.jpg');
 var picture8 = new Pic('picture-8', './img/pic8.jpg');
 var picture9 = new Pic('picture-9', './img/pic9.jpg');
 
-// Pic.render(picture1);
-
 function clickManager(event) {
   clickCounter++;
   if (clickCounter < MAX_CLICK_COUNTER) {
@@ -74,12 +72,9 @@ function clickManager(event) {
     clickedPic.markClick();
     select3PicsAndRender();
   } else {
-    alert('Game Over!');
+    createPicChart();
   }
-  // I know the id of the clicked picture
-  // I know I have an array called randomGoats with the randomly selected goats
-  // I know I have an array called goatStorage with all the goats
-  // I know that I can do goatStorage[randomGoats[...]] to select a specific goat
+  
 }
 
 select3PicsAndRender();
@@ -88,26 +83,48 @@ var placerholder0 = document.getElementById('picture-0');
 var placerholder1 = document.getElementById('picture-1');
 var placerholder2 = document.getElementById('picture-2');
 
-placerholder0.addEventListener('click',clickManager);
-placerholder1.addEventListener('click',clickManager);
-placerholder2.addEventListener('click',clickManager);
+placerholder0.addEventListener('click', clickManager);
+placerholder1.addEventListener('click', clickManager);
+placerholder2.addEventListener('click', clickManager);
 
-//  have a temporary array to keep track of currently selecte values ---> this is how I do it :D  ---> this is the way to go ;), but I'm going to leave this for lab
 
-// keep track of the one's the user has voted
+// chart
 
-// Event listeners for the pictures and for anything that's not a picture
+function createPicChart() {
+  var nameArray = [];
+  var clickArray = [];
 
-// create a loop for 25 iterations
-// at the end, show the list
+  for (index=0; index < picStorageArray.length; index++){
+    nameArray.push(picStorageArray[index].name);
+    clickArray.push(picStorageArray[index].timesClicked);
+  }
 
-// Tasks
-// Picture Constructor
-// Name
-// Piture
-// Adding pictures in global array
-// Render function for constructor
-// Select 3 pictures from the array
-// Select a random number
-// Check that the number is unique
-// Render the 3 pictures in the slot
+  // creates 2d stuff
+  var context = document.getElementById('chart').getContext('2d');
+  var picChart = new Chart(context, {
+    type: 'bar',
+    data: {
+      labels: nameArray,
+      datasets: [
+        {
+          label: 'Goat Clicks',
+          data: clickArray,
+          backgroundColor: '#828282',
+          bordercolor: 'black',
+        }
+      ],
+    },
+    options: {
+      scales: {
+        yAxes: [
+          {
+            ticks: {
+              beginAtZero: 'true',
+            }
+          },
+        ],
+      },
+    },
+  }
+}
+
