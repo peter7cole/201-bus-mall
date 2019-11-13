@@ -16,6 +16,7 @@ const MAX_CLICK_COUNTER = 25;
 var placerholder0 = document.getElementById('placeholder-0');
 var placerholder1 = document.getElementById('placeholder-1');
 var placerholder2 = document.getElementById('placeholder-2');
+var counterDiv = document.getElementById('counter');
 
 //    getRandomPicIndex() returns a random picture (by index number) from my main picture array
 
@@ -68,26 +69,26 @@ var Pic = function (name, picture) {
 
 //    Creates objects for each picture from my Pic constructor with their id and src.
 
-var picture0 = new Pic('usb', './img/usb.gif');
-var picture01 = new Pic('bag', './img/bag.jpg');
-var picture02 = new Pic('banana', './img/banana.jpg');
-var picture03 = new Pic('bathroom', './img/bathroom.jpg');
-var picture04 = new Pic('boots', './img/boots.jpg');
-var picture05 = new Pic('breakfast', './img/breakfast.jpg');
-var picture06 = new Pic('bubblegum', './img/bubblegum.jpg');
-var picture07 = new Pic('chair', './img/chair.jpg');
-var picture08 = new Pic('cthulhu', './img/cthulhu.jpg');
-var picture09 = new Pic('dog-duck', './img/dog-duck.jpg');
-var picture10 = new Pic('dragon', './img/dragon.jpg');
-var picture11 = new Pic('pen', './img/pen.jpg');
-var picture12 = new Pic('pet-sweep', './img/pet-sweep.jpg');
-var picture13 = new Pic('scissors', './img/scissors.jpg');
-var picture14 = new Pic('shark', './img/shark.jpg');
-var picture15 = new Pic('tauntaun', './img/tauntaun.jpg');
-var picture16 = new Pic('unicorn', './img/unicorn.jpg');
-var picture17 = new Pic('water-can', './img/water-can.jpg');
-var picture18 = new Pic('wine-glass', './img/wine-glass.jpg');
-var picture19 = new Pic('sweep', './img/sweep.png');
+var pic00 = new Pic('usb', './img/usb.gif');
+var pic01 = new Pic('bag', './img/bag.jpg');
+var pic02 = new Pic('banana', './img/banana.jpg');
+var pic03 = new Pic('bathroom', './img/bathroom.jpg');
+var pic04 = new Pic('boots', './img/boots.jpg');
+var pic05 = new Pic('breakfast', './img/breakfast.jpg');
+var pic06 = new Pic('bubblegum', './img/bubblegum.jpg');
+var pic07 = new Pic('chair', './img/chair.jpg');
+var pic08 = new Pic('cthulhu', './img/cthulhu.jpg');
+var pic09 = new Pic('dog-duck', './img/dog-duck.jpg');
+var pic10 = new Pic('dragon', './img/dragon.jpg');
+var pic11 = new Pic('pen', './img/pen.jpg');
+var pic12 = new Pic('pet-sweep', './img/pet-sweep.jpg');
+var pic13 = new Pic('scissors', './img/scissors.jpg');
+var pic14 = new Pic('shark', './img/shark.jpg');
+var pic15 = new Pic('tauntaun', './img/tauntaun.jpg');
+var pic16 = new Pic('unicorn', './img/unicorn.jpg');
+var pic17 = new Pic('water-can', './img/water-can.jpg');
+var pic18 = new Pic('wine-glass', './img/wine-glass.jpg');
+var pic19 = new Pic('sweep', './img/sweep.png');
 
 //    The clickManager method registers click events and increments the clickCounter,
 //    checks against the MAX_CLICK_COUNTER,
@@ -113,7 +114,7 @@ function clickManager(event) {
     clickedPic.markClick();
     select3PicsAndRender();
   } else {
-    alert(`Done with ${MAX_CLICK_COUNTER} clicks`)
+    createPicChart();
     //createPicChart();
   }
 }
@@ -127,8 +128,8 @@ placerholder0.addEventListener('click', clickManager);
 placerholder1.addEventListener('click', clickManager);
 placerholder2.addEventListener('click', clickManager);
 
-// C H A R T >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-/*
+// C H A R T
+
 function createPicChart() {
   var nameArray = [];
   var clickArray = [];
@@ -138,7 +139,7 @@ function createPicChart() {
     clickArray.push(picStorageArray[index].timesClicked);
   }
 
-  // creates 2d stuff
+  // ISSUES HERE WITH PIC CHART AND CHART
   var context = document.getElementById('chart').getContext('2d');
   var picChart = new Chart(context, {
     type: 'bar',
@@ -148,7 +149,7 @@ function createPicChart() {
         {
           label: 'Pic Clicks',
           data: clickArray,
-          backgroundColor: '#828282',
+          backgroundColor: 'white',
           borderColor: 'black',
         },
         {
@@ -169,4 +170,4 @@ function createPicChart() {
       }
     },
   });
-} */
+}
