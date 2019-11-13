@@ -7,6 +7,8 @@
 //    the total custom maximum number of click iterations (MAX_CLICK_COUNTER),
 //    and my placeholder image variables to register my event listeners later
 
+var PIC_DATA = 'picData';
+
 var picStorageArray = [];
 var randomPicArray = [];
 var previousArray = [];
@@ -16,7 +18,6 @@ const MAX_CLICK_COUNTER = 25;
 var placerholder0 = document.getElementById('placeholder-0');
 var placerholder1 = document.getElementById('placeholder-1');
 var placerholder2 = document.getElementById('placeholder-2');
-var counterDiv = document.getElementById('counter');
 
 //    getRandomPicIndex() returns a random picture (by index number) from my main picture array
 
@@ -60,64 +61,84 @@ var Pic = function (name, picture) {
     this.timesClicked++;
   };
   this.render = function (domReference) {
-    domReference.src = picture;
+    domReference.src = this.picture;
     this.timesShown++;
     console.log(`${this.name} has been shown ${this.timesShown} times`);
-    this.loadJSON = function(jsonData) {
-      this.timesClicked = jsonData.timesClicked;
-      this.timesShown = jsonData.timesShown;
-      this.name = jsonData.name;
-      this.picture = jsonData.picture;
-    };
   };
-  picStorageArray.push(this);
+  this.loadData = function (data) {
+    this.timesClicked = data.timesClicked;
+    this.timesShown = data.timesShown;
+    this.name = data.name;
+    this.picture = data.picture;
+  };
+  // picStorageArray.push(this); //gonna get moved for local storage set up
 };
 
+//    LOCAL STORAGE ------------------------------------------------------
+//
 //    Creates objects for each picture from my Pic constructor with their id and src.
-if(localStorage.getItem(PIC_DATA) === null) {
-// if(nothing in local) { LOAD THIS
-var pic00 = new Pic('usb', './img/usb.gif');
-var pic01 = new Pic('bag', './img/bag.jpg');
-var pic02 = new Pic('banana', './img/banana.jpg');
-var pic03 = new Pic('bathroom', './img/bathroom.jpg');
-var pic04 = new Pic('boots', './img/boots.jpg');
-var pic05 = new Pic('breakfast', './img/breakfast.jpg');
-var pic06 = new Pic('bubblegum', './img/bubblegum.jpg');
-var pic07 = new Pic('chair', './img/chair.jpg');
-var pic08 = new Pic('cthulhu', './img/cthulhu.jpg');
-var pic09 = new Pic('dog-duck', './img/dog-duck.jpg');
-var pic10 = new Pic('dragon', './img/dragon.jpg');
-var pic11 = new Pic('pen', './img/pen.jpg');
-var pic12 = new Pic('pet-sweep', './img/pet-sweep.jpg');
-var pic13 = new Pic('scissors', './img/scissors.jpg');
-var pic14 = new Pic('shark', './img/shark.jpg');
-var pic15 = new Pic('tauntaun', './img/tauntaun.jpg');
-var pic16 = new Pic('unicorn', './img/unicorn.jpg');
-var pic17 = new Pic('water-can', './img/water-can.jpg');
-var pic18 = new Pic('wine-glass', './img/wine-glass.jpg');
-var pic19 = new Pic('sweep', './img/sweep.png');
+//    Then pushes them into the picStorageArray with a for loop to be accessed later
+//    if (nothing in local) { LOAD THIS
 
-// store objects in array
-// for loop push each one in order into the picStorageArray (picStorageArray.push(this);)
+if (localStorage.getItem(PIC_DATA) === null) {
 
+  var pic00 = new Pic('usb', './img/usb.gif');
+  var pic01 = new Pic('bag', './img/bag.jpg');
+  var pic02 = new Pic('banana', './img/banana.jpg');
+  var pic03 = new Pic('bathroom', './img/bathroom.jpg');
+  var pic04 = new Pic('boots', './img/boots.jpg');
+  var pic05 = new Pic('breakfast', './img/breakfast.jpg');
+  var pic06 = new Pic('bubblegum', './img/bubblegum.jpg');
+  var pic07 = new Pic('chair', './img/chair.jpg');
+  var pic08 = new Pic('cthulhu', './img/cthulhu.jpg');
+  var pic09 = new Pic('dog-duck', './img/dog-duck.jpg');
+  var pic10 = new Pic('dragon', './img/dragon.jpg');
+  var pic11 = new Pic('pen', './img/pen.jpg');
+  var pic12 = new Pic('pet-sweep', './img/pet-sweep.jpg');
+  var pic13 = new Pic('scissors', './img/scissors.jpg');
+  var pic14 = new Pic('shark', './img/shark.jpg');
+  var pic15 = new Pic('tauntaun', './img/tauntaun.jpg');
+  var pic16 = new Pic('unicorn', './img/unicorn.jpg');
+  var pic17 = new Pic('water-can', './img/water-can.jpg');
+  var pic18 = new Pic('wine-glass', './img/wine-glass.jpg');
+  var pic19 = new Pic('sweep', './img/sweep.png');
+
+  var picVariableArray = [pic00, pic01, pic02, pic03, pic04, pic05
+    , pic06, pic07, pic08, pic09, pic10, pic11, pic12, pic13, pic14
+    , pic15, pic16, pic17, pic18, pic19];
+
+  for (var index = 0; index < picVariableArray.length; index++) {
+    picStorageArray.push(picVariableArray[index]);
+  }
 } else {
-  // get data from local storage
-  // parse into objects
-  // load that data into my array
+  //    get data from local storage
+  //    parse into objects
+  //    load that data into my array
+
+  var jsonData = localStorage.getItem(PIC_DATA);
+  var data = JSON.parse(jsonData);
+
+  for (index = 0; index < data.length; index++) {
+    var newPic = new Pic('', '');
+
+    newPic.loadData(data[index]);
+    picStorageArray.push(newPic);
+  }
 }
 
 //    The clickManager method registers click events and increments the clickCounter,
 //    checks against the MAX_CLICK_COUNTER,
 //    sets a local picIndex to then check which image the target id of the click matches,
-//    adds the clicked image to a variable with which to reference its specific markClick()
+//    adds the clicked image to a variable (clicked pic)
+//    with which to reference its specific markClick()
+//    ELSE, after reaching the max click count
+//    save everything to Local Storage and create the Chart
 
 function clickManager(event) {
-  clickCounter++;
-  console.log(`\nclickCounter: ${clickCounter}, ${MAX_CLICK_COUNTER-clickCounter} clicks remaining`);
-
   if (clickCounter < MAX_CLICK_COUNTER) {
+    clickCounter++;
+    console.log(`\nclickCounter: ${clickCounter}, ${MAX_CLICK_COUNTER - clickCounter} clicks remaining`);
     var picIndex;
-
     if (event.target.id === 'placeholder-0') {
       picIndex = 0;
     } else if (event.target.id === 'placeholder-1') {
@@ -125,14 +146,20 @@ function clickManager(event) {
     } else {
       picIndex = 2;
     }
-
     var clickedPic = picStorageArray[randomPicArray[picIndex]];
     clickedPic.markClick();
     select3PicsAndRender();
   } else {
+    savePicDataToLocalStorage();
     createPicChart();
-    //createPicChart();
   }
+}
+
+//    savePicDataToLocalStorage()
+
+function savePicDataToLocalStorage() {
+  var jsonData = JSON.stringify(picStorageArray);
+  localStorage.setItem(PIC_DATA, jsonData); // --> LS
 }
 
 //    Calls select3PicsAndRender() to run the rendering
@@ -150,7 +177,7 @@ function createPicChart() {
   var nameArray = [];
   var clickArray = [];
 
-  for (var index = 0; index < picStorageArray.length; index++){
+  for (var index = 0; index < picStorageArray.length; index++) {
     nameArray.push(picStorageArray[index].name);
     clickArray.push(picStorageArray[index].timesClicked);
   }
@@ -168,10 +195,10 @@ function createPicChart() {
           backgroundColor: 'white',
           borderColor: 'black',
         },
-        {
-          label: 'Pic Clicks',
-          data: clickArray,
-        }
+        // {
+        //   label: 'Pic Clicks',
+        //   data: clickArray,
+        // }
       ],
     },
     options: {
@@ -180,6 +207,7 @@ function createPicChart() {
           {
             ticks: {
               beginAtZero: true,
+              increments: 1,
             }
           },
         ],
