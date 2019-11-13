@@ -4,13 +4,18 @@
 //    my randomly displayed three pictures array (randomPicArray),
 //    my array of the previous three numbers once applicable,
 //    how many clicks out maximum clicks I've already clicked (clickCounter),
-//    and the total custom maximum number of click iterations (MAX_CLICK_COUNTER)
+//    the total custom maximum number of click iterations (MAX_CLICK_COUNTER),
+//    and my placeholder image variables to register my event listeners later
 
 var picStorageArray = [];
 var randomPicArray = [];
 var previousArray = [];
 var clickCounter = 0;
 const MAX_CLICK_COUNTER = 25;
+
+var placerholder0 = document.getElementById('placeholder-0');
+var placerholder1 = document.getElementById('placeholder-1');
+var placerholder2 = document.getElementById('placeholder-2');
 
 //    getRandomPicIndex() returns a random picture (by index number) from my main picture array
 
@@ -34,11 +39,6 @@ function select3PicsAndRender() {
   }
   previousArray = randomPicArray;
   console.log(`randomPicArray: ${randomPicArray}`);
-  console.log(`previousArray: ${previousArray}`);
-
-  var placerholder0 = document.getElementById('placeholder-0');
-  var placerholder1 = document.getElementById('placeholder-1');
-  var placerholder2 = document.getElementById('placeholder-2');
 
   picStorageArray[randomPicArray[0]].render(placerholder0);
   picStorageArray[randomPicArray[1]].render(placerholder1);
@@ -46,49 +46,58 @@ function select3PicsAndRender() {
 }
 
 //    My Pic constructor function that sets name and path for each of 20 pictures,
-//    along with the timesClicked, 
+//    along with the timesClicked, and adding these to my main picStorageArray
+//    markClick method adds increments my total click count to be matched against MAX_CLICK_COUNT
+//    render method grabs the domReference for each picture to be dispayed
 
 var Pic = function (name, picture) {
   this.name = name;
   this.picture = picture;
   this.timesClicked = 0;
-  this.markClick = function() {
+  this.timesShown = 0;
+  this.markClick = function () {
     this.timesClicked++;
   };
   this.render = function (domReference) {
     domReference.src = picture;
+    this.timesShown++;
+    console.log(`${this.name} has been shown ${this.timesShown} times`);
   };
   picStorageArray.push(this);
-  console.log(`Pic: ${Pic}`);
 };
 
-// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+//    Creates objects for each picture from my Pic constructor with their id and src.
 
-var picture0 = new Pic('picture-0', './img/usb.gif');
-var picture01 = new Pic('picture-01', './img/bag.jpg');
-var picture02 = new Pic('picture-02', './img/banana.jpg');
-var picture03 = new Pic('picture-03', './img/bathroom.jpg');
-var picture04 = new Pic('picture-04', './img/boots.jpg');
-var picture05 = new Pic('picture-05', './img/breakfast.jpg');
-var picture06 = new Pic('picture-06', './img/bubblegum.jpg');
-var picture07 = new Pic('picture-07', './img/chair.jpg');
-var picture08 = new Pic('picture-08', './img/cthulhu.jpg');
-var picture09 = new Pic('picture-09', './img/dog-duck.jpg');
-var picture10 = new Pic('picture-10', './img/dragon.jpg');
-var picture11 = new Pic('picture-11', './img/pen.jpg');
-var picture12 = new Pic('picture-12', './img/pet-sweep.jpg');
-var picture13 = new Pic('picture-13', './img/scissors.jpg');
-var picture14 = new Pic('picture-14', './img/shark.jpg');
-var picture15 = new Pic('picture-15', './img/tauntaun.jpg');
-var picture16 = new Pic('picture-16', './img/unicorn.jpg');
-var picture17 = new Pic('picture-17', './img/water-can.jpg');
-var picture18 = new Pic('picture-18', './img/wine-glass.jpg');
-var picture19 = new Pic('picture-19', './img/sweep.png');
+var picture0 = new Pic('usb', './img/usb.gif');
+var picture01 = new Pic('bag', './img/bag.jpg');
+var picture02 = new Pic('banana', './img/banana.jpg');
+var picture03 = new Pic('bathroom', './img/bathroom.jpg');
+var picture04 = new Pic('boots', './img/boots.jpg');
+var picture05 = new Pic('breakfast', './img/breakfast.jpg');
+var picture06 = new Pic('bubblegum', './img/bubblegum.jpg');
+var picture07 = new Pic('chair', './img/chair.jpg');
+var picture08 = new Pic('cthulhu', './img/cthulhu.jpg');
+var picture09 = new Pic('dog-duck', './img/dog-duck.jpg');
+var picture10 = new Pic('dragon', './img/dragon.jpg');
+var picture11 = new Pic('pen', './img/pen.jpg');
+var picture12 = new Pic('pet-sweep', './img/pet-sweep.jpg');
+var picture13 = new Pic('scissors', './img/scissors.jpg');
+var picture14 = new Pic('shark', './img/shark.jpg');
+var picture15 = new Pic('tauntaun', './img/tauntaun.jpg');
+var picture16 = new Pic('unicorn', './img/unicorn.jpg');
+var picture17 = new Pic('water-can', './img/water-can.jpg');
+var picture18 = new Pic('wine-glass', './img/wine-glass.jpg');
+var picture19 = new Pic('sweep', './img/sweep.png');
 
-// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+//    The clickManager method registers click events and increments the clickCounter,
+//    checks against the MAX_CLICK_COUNTER,
+//    sets a local picIndex to then check which image the target id of the click matches,
+//    adds the clicked image to a variable with which to reference its specific markClick()
 
 function clickManager(event) {
   clickCounter++;
+  console.log(`\nclickCounter: ${clickCounter}, ${MAX_CLICK_COUNTER-clickCounter} clicks remaining`);
+
   if (clickCounter < MAX_CLICK_COUNTER) {
     var picIndex;
 
@@ -104,25 +113,22 @@ function clickManager(event) {
     clickedPic.markClick();
     select3PicsAndRender();
   } else {
-    createPicChart();
+    alert(`Done with ${MAX_CLICK_COUNTER} clicks`)
+    //createPicChart();
   }
 }
 
-// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+//    Calls select3PicsAndRender() to run the rendering
+//    and my event listeners for clicking an image
 
 select3PicsAndRender();
-
-var placerholder0 = document.getElementById('picture-0');
-var placerholder1 = document.getElementById('picture-1');
-var placerholder2 = document.getElementById('picture-2');
 
 placerholder0.addEventListener('click', clickManager);
 placerholder1.addEventListener('click', clickManager);
 placerholder2.addEventListener('click', clickManager);
 
-/*
 // C H A R T >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
+/*
 function createPicChart() {
   var nameArray = [];
   var clickArray = [];
@@ -163,5 +169,4 @@ function createPicChart() {
       }
     },
   });
-}
-*/
+} */
