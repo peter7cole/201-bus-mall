@@ -63,12 +63,19 @@ var Pic = function (name, picture) {
     domReference.src = picture;
     this.timesShown++;
     console.log(`${this.name} has been shown ${this.timesShown} times`);
+    this.loadJSON = function(jsonData) {
+      this.timesClicked = jsonData.timesClicked;
+      this.timesShown = jsonData.timesShown;
+      this.name = jsonData.name;
+      this.picture = jsonData.picture;
+    };
   };
   picStorageArray.push(this);
 };
 
 //    Creates objects for each picture from my Pic constructor with their id and src.
-
+if(localStorage.getItem(PIC_DATA) === null) {
+// if(nothing in local) { LOAD THIS
 var pic00 = new Pic('usb', './img/usb.gif');
 var pic01 = new Pic('bag', './img/bag.jpg');
 var pic02 = new Pic('banana', './img/banana.jpg');
@@ -89,6 +96,15 @@ var pic16 = new Pic('unicorn', './img/unicorn.jpg');
 var pic17 = new Pic('water-can', './img/water-can.jpg');
 var pic18 = new Pic('wine-glass', './img/wine-glass.jpg');
 var pic19 = new Pic('sweep', './img/sweep.png');
+
+// store objects in array
+// for loop push each one in order into the picStorageArray (picStorageArray.push(this);)
+
+} else {
+  // get data from local storage
+  // parse into objects
+  // load that data into my array
+}
 
 //    The clickManager method registers click events and increments the clickCounter,
 //    checks against the MAX_CLICK_COUNTER,
