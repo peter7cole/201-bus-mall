@@ -1,23 +1,40 @@
 'use strict';
 
+//    Here I declare my pictures array (picStorageArray),
+//    my randomly displayed three pictures array (randomPicArray),
+//    my array of the previous three numbers once applicable,
+//    how many clicks out maximum clicks I've already clicked (clickCounter),
+//    and the total custom maximum number of click iterations (MAX_CLICK_COUNTER)
+
 var picStorageArray = [];
 var randomPicArray = [];
+var previousArray = [];
 var clickCounter = 0;
 const MAX_CLICK_COUNTER = 25;
+
+//    getRandomPicIndex() returns a random picture (by index number) from my main picture array
 
 function getRandomPicIndex() {
   return Math.floor(Math.random() * (picStorageArray.length));
 }
 
+//    select3PicsAndRender() resets the 3 random pictures,
+//    randomly selects 3 pictures that aren't repeated or previously used in the last set,
+//    and populates them in randomPicArray, resetting previousArray to that afterwards,
+//    gets my placeholder images, and renders them to the DOM.
+
 function select3PicsAndRender() {
   randomPicArray = [];
+  console.log(`previousArray: ${previousArray}`);
   while (randomPicArray.length < 3) {
     var nextRandomValue = getRandomPicIndex();
-    if (!randomPicArray.includes(nextRandomValue)) {
+    if ((!randomPicArray.includes(nextRandomValue)) && (!previousArray.includes(nextRandomValue))) {
       randomPicArray.push(nextRandomValue);
     }
   }
+  previousArray = randomPicArray;
   console.log(`randomPicArray: ${randomPicArray}`);
+  console.log(`previousArray: ${previousArray}`);
 
   var placerholder0 = document.getElementById('placeholder-0');
   var placerholder1 = document.getElementById('placeholder-1');
@@ -28,12 +45,13 @@ function select3PicsAndRender() {
   picStorageArray[randomPicArray[2]].render(placerholder2);
 }
 
+//    My Pic constructor function that sets name and path for each of 20 pictures,
+//    along with the timesClicked, 
 
 var Pic = function (name, picture) {
   this.name = name;
   this.picture = picture;
   this.timesClicked = 0;
-  this.timesShown = 0;
   this.markClick = function() {
     this.timesClicked++;
   };
@@ -44,16 +62,30 @@ var Pic = function (name, picture) {
   console.log(`Pic: ${Pic}`);
 };
 
-var picture0 = new Pic('picture-0', './img/pic0.jpg');
-var picture1 = new Pic('picture-1', './img/pic1.jpg');
-var picture2 = new Pic('picture-2', './img/pic2.jpg');
-var picture3 = new Pic('picture-3', './img/pic3.jpg');
-var picture4 = new Pic('picture-4', './img/pic4.jpg');
-var picture5 = new Pic('picture-5', './img/pic5.jpg');
-var picture6 = new Pic('picture-6', './img/pic6.jpg');
-var picture7 = new Pic('picture-7', './img/pic7.jpg');
-var picture8 = new Pic('picture-8', './img/pic8.jpg');
-var picture9 = new Pic('picture-9', './img/pic9.jpg');
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+var picture0 = new Pic('picture-0', './img/usb.gif');
+var picture01 = new Pic('picture-01', './img/bag.jpg');
+var picture02 = new Pic('picture-02', './img/banana.jpg');
+var picture03 = new Pic('picture-03', './img/bathroom.jpg');
+var picture04 = new Pic('picture-04', './img/boots.jpg');
+var picture05 = new Pic('picture-05', './img/breakfast.jpg');
+var picture06 = new Pic('picture-06', './img/bubblegum.jpg');
+var picture07 = new Pic('picture-07', './img/chair.jpg');
+var picture08 = new Pic('picture-08', './img/cthulhu.jpg');
+var picture09 = new Pic('picture-09', './img/dog-duck.jpg');
+var picture10 = new Pic('picture-10', './img/dragon.jpg');
+var picture11 = new Pic('picture-11', './img/pen.jpg');
+var picture12 = new Pic('picture-12', './img/pet-sweep.jpg');
+var picture13 = new Pic('picture-13', './img/scissors.jpg');
+var picture14 = new Pic('picture-14', './img/shark.jpg');
+var picture15 = new Pic('picture-15', './img/tauntaun.jpg');
+var picture16 = new Pic('picture-16', './img/unicorn.jpg');
+var picture17 = new Pic('picture-17', './img/water-can.jpg');
+var picture18 = new Pic('picture-18', './img/wine-glass.jpg');
+var picture19 = new Pic('picture-19', './img/sweep.png');
+
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 function clickManager(event) {
   clickCounter++;
@@ -76,6 +108,8 @@ function clickManager(event) {
   }
 }
 
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
 select3PicsAndRender();
 
 var placerholder0 = document.getElementById('picture-0');
@@ -86,8 +120,8 @@ placerholder0.addEventListener('click', clickManager);
 placerholder1.addEventListener('click', clickManager);
 placerholder2.addEventListener('click', clickManager);
 
-
-// chart
+/*
+// C H A R T >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 function createPicChart() {
   var nameArray = [];
@@ -130,4 +164,4 @@ function createPicChart() {
     },
   });
 }
-
+*/
