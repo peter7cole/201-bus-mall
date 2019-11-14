@@ -8,16 +8,20 @@
 //    and my placeholder image variables to register my event listeners later
 
 var PIC_DATA = 'picData';
-
 var picStorageArray = [];
 var randomPicArray = [];
 var previousArray = [];
 var clickCounter = 0;
+var placeholder0 = document.getElementById('placeholder-0');
+var placeholder1 = document.getElementById('placeholder-1');
+var placeholder2 = document.getElementById('placeholder-2');
+var tallyReference = document.getElementById('tally');
+var maxReference = document.getElementById('max');
+var finishReference = document.getElementById('head');
 const MAX_CLICK_COUNTER = 25;
 
-var placerholder0 = document.getElementById('placeholder-0');
-var placerholder1 = document.getElementById('placeholder-1');
-var placerholder2 = document.getElementById('placeholder-2');
+tallyReference.textContent = MAX_CLICK_COUNTER - clickCounter;
+maxReference.textContent = MAX_CLICK_COUNTER;
 
 //    getRandomPicIndex() returns a random picture (by index number) from my main picture array
 
@@ -42,9 +46,9 @@ function select3PicsAndRender() {
   previousArray = randomPicArray;
   console.log(`randomPicArray: ${randomPicArray}`);
 
-  picStorageArray[randomPicArray[0]].render(placerholder0);
-  picStorageArray[randomPicArray[1]].render(placerholder1);
-  picStorageArray[randomPicArray[2]].render(placerholder2);
+  picStorageArray[randomPicArray[0]].render(placeholder0);
+  picStorageArray[randomPicArray[1]].render(placeholder1);
+  picStorageArray[randomPicArray[2]].render(placeholder2);
 }
 
 //    My Pic constructor function that sets name and path for each of 20 pictures,
@@ -71,14 +75,12 @@ var Pic = function (name, picture) {
     this.name = data.name;
     this.picture = data.picture;
   };
-  // picStorageArray.push(this); //gonna get moved for local storage set up
 };
 
-//    LOCAL STORAGE ------------------------------------------------------
+//    LOCAL STORAGE
 //
-//    Creates objects for each picture from my Pic constructor with their id and src.
+//    Creates objects for each picture from my Pic constructor with their chart name and path
 //    Then pushes them into the picStorageArray with a for loop to be accessed later
-//    if (nothing in local) { LOAD THIS
 
 if (localStorage.getItem(PIC_DATA) === null) {
 
@@ -111,17 +113,17 @@ if (localStorage.getItem(PIC_DATA) === null) {
     picStorageArray.push(picVariableArray[index]);
   }
 } else {
-  //    get data from local storage
-  //    parse into objects
-  //    load that data into my array
+  //    Get PIC_DATA from local storage, store as jsonData
+  //    Parse into object
+  //    Load that data into my array
 
   var jsonData = localStorage.getItem(PIC_DATA);
-  var data = JSON.parse(jsonData);
+  var dataArray = JSON.parse(jsonData);
 
-  for (index = 0; index < data.length; index++) {
+  for (index = 0; index < dataArray.length; index++) {
     var newPic = new Pic('', '');
 
-    newPic.loadData(data[index]);
+    newPic.loadData(dataArray[index]);
     picStorageArray.push(newPic);
   }
 }
@@ -135,8 +137,9 @@ if (localStorage.getItem(PIC_DATA) === null) {
 //    save everything to Local Storage and create the Chart
 
 function clickManager(event) {
-  if (clickCounter < MAX_CLICK_COUNTER) {
+  if (clickCounter < (MAX_CLICK_COUNTER - 1)) {
     clickCounter++;
+    tallyReference.textContent = MAX_CLICK_COUNTER - clickCounter;
     console.log(`\nclickCounter: ${clickCounter}, ${MAX_CLICK_COUNTER - clickCounter} clicks remaining`);
     var picIndex;
     if (event.target.id === 'placeholder-0') {
@@ -155,7 +158,9 @@ function clickManager(event) {
   }
 }
 
-//    savePicDataToLocalStorage()
+//    savePicDataToLocalStorage() function saves user data to Local Storage
+//    by creating a jsonData variable that holds a string version of objects
+//    and then saves the string of all my picture objects into PIC_DATA
 
 function savePicDataToLocalStorage() {
   var jsonData = JSON.stringify(picStorageArray);
@@ -167,15 +172,16 @@ function savePicDataToLocalStorage() {
 
 select3PicsAndRender();
 
-placerholder0.addEventListener('click', clickManager);
-placerholder1.addEventListener('click', clickManager);
-placerholder2.addEventListener('click', clickManager);
+placeholder0.addEventListener('click', clickManager);
+placeholder1.addEventListener('click', clickManager);
+placeholder2.addEventListener('click', clickManager);
 
 // C H A R T
 
 function createPicChart() {
   var nameArray = [];
   var clickArray = [];
+  finishReference.textContent = 'Great! Here are your results:';
 
   for (var index = 0; index < picStorageArray.length; index++) {
     nameArray.push(picStorageArray[index].name);

@@ -3,8 +3,18 @@ body {
   background-color: #B5B5B5;
 }
 
+p {
+  font-family: Arial, Helvetica, sans-serif;
+  color: black;
+  font-size: 32px;
+  text-shadow: 1px 1px grey;
+  padding-left: 40px;
+}
+
 img {
   max-height: 300px;
   max-width: 300px;
-  margin: auto;
+  margin: 10px;
+  vertical-align: middle;
+  border: 1px solid black;
 }
