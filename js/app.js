@@ -1,17 +1,18 @@
 'use strict';
 
-//    Here I declare my pictures array (picStorageArray),
+//    Declaration of local storage PIC_DATA, pictures array (picStorageArray),
 //    my randomly displayed three pictures array (randomPicArray),
 //    my array of the previous three numbers once applicable,
 //    how many clicks out maximum clicks I've already clicked (clickCounter),
 //    the total custom maximum number of click iterations (MAX_CLICK_COUNTER),
-//    and my placeholder image variables to register my event listeners later
+//    all my global variables for event listeners later,
+//    and printing the tally and max
 
 var PIC_DATA = 'picData';
 var picStorageArray = [];
 var randomPicArray = [];
 var previousArray = [];
-var clickCounter = 0;
+var clickCounter = 25;
 var placeholder0 = document.getElementById('placeholder-0');
 var placeholder1 = document.getElementById('placeholder-1');
 var placeholder2 = document.getElementById('placeholder-2');
@@ -173,6 +174,9 @@ function savePicDataToLocalStorage() {
   localStorage.setItem(PIC_DATA, jsonData); // --> LS
 }
 
+// clearDataManager and reloadManager were great exercises in mouse event management
+// and learning that you can in fact remove local data from the browser by Key name
+
 function clearDataManager(event) {
   if (event.type === 'mousedown') {
     clearDataReference.removeEventListener('mousedown', clearDataManager);
@@ -208,7 +212,8 @@ placeholder2.addEventListener('click', clickManager);
 clearDataReference.addEventListener('mousedown', clearDataManager);
 reloadReference.addEventListener('mousedown', reloadManager);
 
-// C H A R T
+//    Chart drawn, endgame text with resets printed,
+//    results stored in arrays to be rendered
 
 function createPicChart() {
   var nameArray = [];
@@ -226,7 +231,6 @@ function createPicChart() {
     shownArray.push(picStorageArray[index].timesShown);
   }
 
-  // ISSUES HERE WITH PIC CHART AND CHART
   var context = document.getElementById('chart').getContext('2d');
   var picChart = new Chart(context, {
     type: 'bar',
