@@ -1,17 +1,33 @@
 
 body {
   background-color: #B5B5B5;
-}
-
-p {
   font-family: Arial, Helvetica, sans-serif;
   color: black;
-  font-size: 32px;
   text-shadow: 1px 1px grey;
-  padding-left: 40px;
 }
 
-img {
+#head {
+  padding-left: 40px;
+  font-size: 32px;
+}
+
+#reload, #clear {
+  visibility: hidden;
+  border: 1px solid black;
+  background-color: rgb(216, 216, 216);
+  font-size: 24px;
+  margin-left: 20px;
+}
+
+#reload {
+  opacity: 1;
+}
+
+#clear {
+  opacity: 1;
+}
+
+.threePics {
   max-height: 300px;
   max-width: 300px;
   margin: 10px;

@@ -15,10 +15,12 @@ var clickCounter = 0;
 var placeholder0 = document.getElementById('placeholder-0');
 var placeholder1 = document.getElementById('placeholder-1');
 var placeholder2 = document.getElementById('placeholder-2');
+var clearDataReference = document.getElementById('clear');
+var reloadReference = document.getElementById('reload');
 var tallyReference = document.getElementById('tally');
 var maxReference = document.getElementById('max');
 var finishReference = document.getElementById('head');
-const MAX_CLICK_COUNTER = 25;
+const MAX_CLICK_COUNTER = 5;
 
 tallyReference.textContent = MAX_CLICK_COUNTER - clickCounter;
 maxReference.textContent = MAX_CLICK_COUNTER;
@@ -124,6 +126,7 @@ if (localStorage.getItem(PIC_DATA) === null) {
     var newPic = new Pic('', '');
 
     newPic.loadData(dataArray[index]);
+    console.log(newPic);
     picStorageArray.push(newPic);
   }
 }
@@ -154,6 +157,9 @@ function clickManager(event) {
     select3PicsAndRender();
   } else {
     savePicDataToLocalStorage();
+    placeholder0.removeEventListener('click', clickManager);
+    placeholder1.removeEventListener('click', clickManager);
+    placeholder2.removeEventListener('click', clickManager);
     createPicChart();
   }
 }
@@ -167,6 +173,30 @@ function savePicDataToLocalStorage() {
   localStorage.setItem(PIC_DATA, jsonData); // --> LS
 }
 
+function clearDataManager(event) {
+  if (event.type === 'mousedown') {
+    clearDataReference.removeEventListener('mousedown', clearDataManager);
+    clearDataReference.style.opacity = '.5';
+    document.addEventListener('mouseup', clearDataManager);
+  } else {
+    document.removeEventListener('mouseup', clearDataManager);
+    clearDataReference.style.opacity = '1';
+    localStorage.removeItem('picData');
+  }
+}
+
+function reloadManager(event) {
+  if (event.type === 'mousedown') {
+    reloadReference.removeEventListener('mousedown', reloadManager);
+    reloadReference.style.opacity = '.5';
+    document.addEventListener('mouseup', reloadManager);
+  } else {
+    document.removeEventListener('mouseup', reloadManager);
+    reloadReference.style.opacity = '1';
+    location.reload();
+  }
+}
+
 //    Calls select3PicsAndRender() to run the rendering
 //    and my event listeners for clicking an image
 
@@ -175,17 +205,25 @@ select3PicsAndRender();
 placeholder0.addEventListener('click', clickManager);
 placeholder1.addEventListener('click', clickManager);
 placeholder2.addEventListener('click', clickManager);
+clearDataReference.addEventListener('mousedown', clearDataManager);
+reloadReference.addEventListener('mousedown', reloadManager);
 
 // C H A R T
 
 function createPicChart() {
   var nameArray = [];
   var clickArray = [];
+  var shownArray = [];
   finishReference.textContent = 'Great! Here are your results:';
+  clearDataReference.textContent = 'CLEAR';
+  clearDataReference.style.visibility = 'visible';
+  reloadReference.textContent = 'RELOAD';
+  reloadReference.style.visibility = 'visible';
 
   for (var index = 0; index < picStorageArray.length; index++) {
     nameArray.push(picStorageArray[index].name);
     clickArray.push(picStorageArray[index].timesClicked);
+    shownArray.push(picStorageArray[index].timesShown);
   }
 
   // ISSUES HERE WITH PIC CHART AND CHART
@@ -196,15 +234,17 @@ function createPicChart() {
       labels: nameArray,
       datasets: [
         {
-          label: 'Pic Clicks',
+          label: 'Clicked',
           data: clickArray,
           backgroundColor: 'white',
           borderColor: 'black',
         },
-        // {
-        //   label: 'Pic Clicks',
-        //   data: clickArray,
-        // }
+        {
+          label: 'Shown',
+          data: shownArray,
+          backgroundColor: 'orange',
+          borderColor: 'black',
+        }
       ],
     },
     options: {
