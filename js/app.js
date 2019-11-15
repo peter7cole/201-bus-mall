@@ -12,7 +12,7 @@ var PIC_DATA = 'picData';
 var picStorageArray = [];
 var randomPicArray = [];
 var previousArray = [];
-var clickCounter = 25;
+var clickCounter = 0;
 var placeholder0 = document.getElementById('placeholder-0');
 var placeholder1 = document.getElementById('placeholder-1');
 var placeholder2 = document.getElementById('placeholder-2');
@@ -21,7 +21,7 @@ var reloadReference = document.getElementById('reload');
 var tallyReference = document.getElementById('tally');
 var maxReference = document.getElementById('max');
 var finishReference = document.getElementById('head');
-const MAX_CLICK_COUNTER = 5;
+const MAX_CLICK_COUNTER = 25;
 
 tallyReference.textContent = MAX_CLICK_COUNTER - clickCounter;
 maxReference.textContent = MAX_CLICK_COUNTER;
