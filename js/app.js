@@ -1,13 +1,5 @@
 'use strict';
 
-//    Declaration of local storage PIC_DATA, pictures array (picStorageArray),
-//    my randomly displayed three pictures array (randomPicArray),
-//    my array of the previous three numbers once applicable,
-//    how many clicks out maximum clicks I've already clicked (clickCounter),
-//    the total custom maximum number of click iterations (MAX_CLICK_COUNTER),
-//    all my global variables for event listeners later,
-//    and printing the tally and max
-
 var PIC_DATA = 'picData';
 var picStorageArray = [];
 var randomPicArray = [];
@@ -26,16 +18,9 @@ const MAX_CLICK_COUNTER = 25;
 tallyReference.textContent = MAX_CLICK_COUNTER - clickCounter;
 maxReference.textContent = MAX_CLICK_COUNTER;
 
-//    getRandomPicIndex() returns a random picture (by index number) from my main picture array
-
 function getRandomPicIndex() {
   return Math.floor(Math.random() * (picStorageArray.length));
 }
-
-//    select3PicsAndRender() resets the 3 random pictures,
-//    randomly selects 3 pictures that aren't repeated or previously used in the last set,
-//    and populates them in randomPicArray, resetting previousArray to that afterwards,
-//    gets my placeholder images, and renders them to the DOM.
 
 function select3PicsAndRender() {
   randomPicArray = [];
@@ -53,11 +38,6 @@ function select3PicsAndRender() {
   picStorageArray[randomPicArray[1]].render(placeholder1);
   picStorageArray[randomPicArray[2]].render(placeholder2);
 }
-
-//    My Pic constructor function that sets name and path for each of 20 pictures,
-//    along with the timesClicked, and adding these to my main picStorageArray
-//    markClick method adds increments my total click count to be matched against MAX_CLICK_COUNT
-//    render method grabs the domReference for each picture to be dispayed
 
 var Pic = function (name, picture) {
   this.name = name;
@@ -79,11 +59,6 @@ var Pic = function (name, picture) {
     this.picture = data.picture;
   };
 };
-
-//    LOCAL STORAGE
-//
-//    Creates objects for each picture from my Pic constructor with their chart name and path
-//    Then pushes them into the picStorageArray with a for loop to be accessed later
 
 if (localStorage.getItem(PIC_DATA) === null) {
 
@@ -116,10 +91,6 @@ if (localStorage.getItem(PIC_DATA) === null) {
     picStorageArray.push(picVariableArray[index]);
   }
 } else {
-  //    Get PIC_DATA from local storage, store as jsonData
-  //    Parse into object
-  //    Load that data into my array
-
   var jsonData = localStorage.getItem(PIC_DATA);
   var dataArray = JSON.parse(jsonData);
 
@@ -131,14 +102,6 @@ if (localStorage.getItem(PIC_DATA) === null) {
     picStorageArray.push(newPic);
   }
 }
-
-//    The clickManager method registers click events and increments the clickCounter,
-//    checks against the MAX_CLICK_COUNTER,
-//    sets a local picIndex to then check which image the target id of the click matches,
-//    adds the clicked image to a variable (clicked pic)
-//    with which to reference its specific markClick()
-//    ELSE, after reaching the max click count
-//    save everything to Local Storage and create the Chart
 
 function clickManager(event) {
   if (clickCounter < (MAX_CLICK_COUNTER - 1)) {
@@ -165,17 +128,10 @@ function clickManager(event) {
   }
 }
 
-//    savePicDataToLocalStorage() function saves user data to Local Storage
-//    by creating a jsonData variable that holds a string version of objects
-//    and then saves the string of all my picture objects into PIC_DATA
-
 function savePicDataToLocalStorage() {
   var jsonData = JSON.stringify(picStorageArray);
-  localStorage.setItem(PIC_DATA, jsonData); // --> LS
+  localStorage.setItem(PIC_DATA, jsonData);
 }
-
-// clearDataManager and reloadManager were great exercises in mouse event management
-// and learning that you can in fact remove local data from the browser by Key name
 
 function clearDataManager(event) {
   if (event.type === 'mousedown') {
@@ -186,6 +142,9 @@ function clearDataManager(event) {
     document.removeEventListener('mouseup', clearDataManager);
     clearDataReference.style.opacity = '1';
     localStorage.removeItem('picData');
+    clearDataReference.addEventListener('mousedown', clearDataManager);
+    picStorageArray = [];
+    createPicChart();
   }
 }
 
@@ -201,9 +160,6 @@ function reloadManager(event) {
   }
 }
 
-//    Calls select3PicsAndRender() to run the rendering
-//    and my event listeners for clicking an image
-
 select3PicsAndRender();
 
 placeholder0.addEventListener('click', clickManager);
@@ -212,14 +168,11 @@ placeholder2.addEventListener('click', clickManager);
 clearDataReference.addEventListener('mousedown', clearDataManager);
 reloadReference.addEventListener('mousedown', reloadManager);
 
-//    Chart drawn, endgame text with resets printed,
-//    results stored in arrays to be rendered
-
 function createPicChart() {
   var nameArray = [];
   var clickArray = [];
   var shownArray = [];
-  finishReference.textContent = 'Great! Here are your results:';
+  finishReference.textContent = 'Great! Here are your results below';
   clearDataReference.textContent = 'CLEAR';
   clearDataReference.style.visibility = 'visible';
   reloadReference.textContent = 'RELOAD';
